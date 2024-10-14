@@ -1,4 +1,5 @@
 import {
+  FlatList,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -8,7 +9,6 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import uuid from 'react-native-uuid';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
   //inputun icerisinde ki deger
@@ -16,10 +16,19 @@ const App = () => {
   //eklenilen todolar
   const [todos, setTodos] = useState([]);
 
+  const saveTodos = saveTodo => {
+    try {
+      AsyncStorage.setItem('todos', JSON.stringify(saveTodo));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //add butonuna basildiginda calisacak olan fonksiyon
   const addTodo = () => {
     //yeni bir todo objesi olurstur ve todo stateine aktar
     setTodos([...todos, {id: uuid.v4(), text: todo}]);
+    saveTodos();
   };
   console.log(todos);
 
@@ -41,22 +50,30 @@ const App = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.todoItem}>
-          <Text style={{color: '#000000'}}>text</Text>
-          <View style={{flexDirection: 'row'}}>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={[styles.button, styles.deleteButton]}>
-                <Text style={styles.buttonText}> Delete</Text>
-              </TouchableOpacity>
-            </View>
+        <FlatList
+          data={todos}
+          keyExtractor={item => item?.id.toString()}
+          renderItem={({item}) => (
+            <View style={styles.todoItem}>
+              <Text style={{color: '#000000'}}>{item?.text}</Text>
+              <View style={{flexDirection: 'row'}}>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.deleteButton]}>
+                    <Text style={styles.buttonText}> Delete</Text>
+                  </TouchableOpacity>
+                </View>
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={[styles.button, styles.updateButton]}>
-                <Text style={styles.buttonText}> Update</Text>
-              </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.updateButton]}>
+                    <Text style={styles.buttonText}> Update</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
+          )}
+        />
       </SafeAreaView>
     </View>
   );
