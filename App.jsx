@@ -6,17 +6,37 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import uuid from 'react-native-uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
+  //inputun icerisinde ki deger
+  const [todo, setTodo] = useState('');
+  //eklenilen todolar
+  const [todos, setTodos] = useState([]);
+
+  //add butonuna basildiginda calisacak olan fonksiyon
+  const addTodo = () => {
+    //yeni bir todo objesi olurstur ve todo stateine aktar
+    setTodos([...todos, {id: uuid.v4(), text: todo}]);
+  };
+  console.log(todos);
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <Text style={styles.headerText}>React Native Async Storage</Text>
 
         <View style={styles.inputContainer}>
-          <TextInput placeholder="Type a Todo" style={styles.input} />
-          <TouchableOpacity style={[styles.button, styles.addButton]}>
+          <TextInput
+            onChangeText={text => setTodo(text)}
+            placeholder="Type a Todo"
+            style={styles.input}
+          />
+          <TouchableOpacity
+            onPress={addTodo}
+            style={[styles.button, styles.addButton]}>
             <Text style={styles.buttonText}>Add</Text>
           </TouchableOpacity>
         </View>
