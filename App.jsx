@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import uuid from 'react-native-uuid';
 
 const App = () => {
@@ -16,21 +16,38 @@ const App = () => {
   //eklenilen todolar
   const [todos, setTodos] = useState([]);
 
-  const saveTodos = saveTodo => {
+  const saveTodos = async saveTodo => {
     try {
-      AsyncStorage.setItem('todos', JSON.stringify(saveTodo));
+      // AsyncStorage ekleme yaparken setItem metodu ile ekleme yapariz
+      // Bizden 2 deger ister:
+      //1.deger: key(string;) | 2.deger: value(string)
+      //objeyi stringe cevirebilmek icin json.stringify metodu kullaniriz
+      await AsyncStorage.setItem('todos', JSON.stringify(saveTodo));
     } catch (error) {
       console.log(error);
     }
   };
 
+  const loadTodos = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('todos');
+      console.log('storedData', storedData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadTodos();
+  });
+
   //add butonuna basildiginda calisacak olan fonksiyon
   const addTodo = () => {
     //yeni bir todo objesi olurstur ve todo stateine aktar
-    setTodos([...todos, {id: uuid.v4(), text: todo}]);
-    saveTodos();
+    const updatedTodos = [...todos, {id: uuid.v4(), text: todo}];
+    setTodos(updatedTodos);
+    saveTodos(updatedTodos);
   };
-  console.log(todos);
 
   return (
     <View style={styles.container}>
