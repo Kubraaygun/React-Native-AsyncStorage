@@ -8,7 +8,9 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+
 import uuid from 'react-native-uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
   //inputun icerisinde ki deger
@@ -31,10 +33,21 @@ const App = () => {
   const loadTodos = async () => {
     try {
       const storedData = await AsyncStorage.getItem('todos');
-      console.log('storedData', storedData);
+      if (storedData) {
+        setTodos(JSON.parse(storedData));
+      }
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const deleteTodo = async id => {
+    //id'si esit olmayanlari cikar ve bize dizi olarak dondur
+    const updatedTodos = todos.filter(item => item.id !== id);
+    //state guncelle
+    setTodos(updatedTodos);
+    //asyncstorage guncelle
+    saveTodos(updatedTodos);
   };
 
   useEffect(() => {
@@ -76,6 +89,7 @@ const App = () => {
               <View style={{flexDirection: 'row'}}>
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
+                    onPress={() => deleteTodo(item?.id)}
                     style={[styles.button, styles.deleteButton]}>
                     <Text style={styles.buttonText}> Delete</Text>
                   </TouchableOpacity>
