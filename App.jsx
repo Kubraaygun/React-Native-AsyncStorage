@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -18,6 +19,8 @@ const App = () => {
   //eklenilen todolar
   const [todos, setTodos] = useState([]);
 
+  //App yuklendiginde AsyncStorage'den todolari kaydetmek
+
   const saveTodos = async saveTodo => {
     try {
       // AsyncStorage ekleme yaparken setItem metodu ile ekleme yapariz
@@ -30,6 +33,7 @@ const App = () => {
     }
   };
 
+  //AsyncStorage'den todolari yuklemek icin verileri almak
   const loadTodos = async () => {
     try {
       const storedData = await AsyncStorage.getItem('todos');
@@ -41,6 +45,7 @@ const App = () => {
     }
   };
 
+  //silme
   const deleteTodo = async id => {
     //id'si esit olmayanlari cikar ve bize dizi olarak dondur
     const updatedTodos = todos.filter(item => item.id !== id);
@@ -49,6 +54,34 @@ const App = () => {
     //asyncstorage guncelle
     saveTodos(updatedTodos);
   };
+
+  //guncelleme
+
+  const updatedTodos = id => {
+    // id'sini bildigimiz elemani todos dizisi icerisinde bulmak icin find methodu kullandik
+    const exitingTodo = todos?.find(item => item.id === id);
+    //id'li eleman dizide yoksa fonksiyonu durdur
+    if (!exitingTodo) return;
+
+    Alert.prompt(
+      'Edit Todo', //kullaniciya gosterilecek baslik
+      'Update', //kullaniciya yonlendirme
+
+      newUpdateText => {
+        if (newUpdateText) {
+          const updateTodos = todos.map(item =>
+            item?.id === id ? {...item, text: newUpdateText} : item,
+          );
+          setTodos(updateTodos);
+          saveTodos(updateTodos);
+        }
+      },
+      'plain-text',
+      exitingTodo.text,
+    );
+  };
+
+  //useEffect hooku, butun render islemlerinin sonunda calisir
 
   useEffect(() => {
     loadTodos();
@@ -97,6 +130,7 @@ const App = () => {
 
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
+                    onPress={() => updatedTodos(item?.id)}
                     style={[styles.button, styles.updateButton]}>
                     <Text style={styles.buttonText}> Update</Text>
                   </TouchableOpacity>
