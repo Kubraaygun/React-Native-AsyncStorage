@@ -14,7 +14,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'toDoList' do
+target 'asyncstorage' do
   config = use_native_modules!
 
   use_react_native!(
@@ -23,7 +23,7 @@ target 'toDoList' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'toDoListTests' do
+  target 'asyncstorageTests' do
     inherit! :complete
     # Pods for testing
   end
