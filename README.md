@@ -15,7 +15,7 @@ Bu proje, kullanıcılara React Native'de AsyncStorage kullanarak bir "Yapılaca
 
 - **react-native:**  
    React Native uygulama geliştirme için temel yapı.
-- **react-native-uuid:**
+- **react-native-uuid:**  
   Her yeni görev için benzersiz bir ID oluşturmak amacıyla kullanılır.
-- **@react-native-async-storage/async-storage:**
+- **@react-native-async-storage/async-storage:**  
   Görevlerin cihazda kalıcı olarak saklanması için kullanılan yerel depolama çözümü.
