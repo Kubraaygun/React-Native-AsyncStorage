@@ -10,3 +10,9 @@ Bu proje, kullanıcılara React Native'de AsyncStorage kullanarak bir "Yapılaca
 - Eklenen görev, silme butonuna basılarak listeden kaldırılabilir.
 - Kullanıcı, listedeki bir görevi güncelleyebilir.
 - AsyncStorage kullanılarak görevler yerel depolamada saklanır ve uygulama yeniden açıldığında bu veriler yüklenir.
+
+## Kullanılan Kütüphaneler
+
+- ** react-native : ** React Native uygulama geliştirme için temel yapı.
+- ** react-native-uuid : ** Her yeni görev için benzersiz bir ID oluşturmak amacıyla kullanılır.
+- ** @react-native-async-storage/async-storage : ** Görevlerin cihazda kalıcı olarak saklanması için kullanılan yerel depolama çözümü.
