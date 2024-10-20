@@ -11,6 +11,21 @@ Bu proje, kullanıcılara React Native'de AsyncStorage kullanarak bir "Yapılaca
 - Kullanıcı, listedeki bir görevi güncelleyebilir.
 - AsyncStorage kullanılarak görevler yerel depolamada saklanır ve uygulama yeniden açıldığında bu veriler yüklenir.
 
+## Bilesenler
+
+### TodoScreen
+
+- **todo**: Kullanıcının TextInput alanına girdiği değeri saklar.
+- **todos**: Tüm görevlerin listesini saklar.
+
+### Fonksiyonlar
+
+- **saveTodos**: Görevleri AsyncStorage'a kaydeder.
+- **loadTodos**: AsyncStorage'daki görevleri yükler.
+- **deleteTodo**: Seçilen görevi siler ve AsyncStorage'ı günceller.
+- **updatedTodos**: Seçilen görevi düzenler ve AsyncStorage'ı günceller.
+- **addTodo**: Yeni bir görev ekler ve kaydeder.
+
 ## Kullanılan Kütüphaneler
 
 - **react-native:**  
